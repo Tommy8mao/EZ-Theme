@@ -1,7 +1,7 @@
 /**
  * 外部配置文件
  * index.html 中可以搜索 EZ 将其替换为您的网站名称
- * logo 摆放位置为 images/logo.png
+ * logo 摆放位置为 images/logo.ico
  */
 
 export const config  = {
@@ -29,9 +29,7 @@ export const config  = {
         // 支持字符串形式(单个API地址)或数组形式(多个备选API地址)
         // 多个地址时，会按顺序检测可用性，并使用第一个可用的地址
         staticBaseUrl: [
-            'https://w5x8mu2a9943r.ezdemo.xyz/api/v1',
-            'https://skhsn6q4pnv95.ezdemo.xyz/api/v1',
-            'https://gy1v06omopzc8.ezdemo.xyz/api/v1'
+            'https://backend.m78star.cloud/api/v1',
         ],
       
         // 自动获取模式配置 (urlMode = 'auto'时使用)
@@ -49,7 +47,7 @@ export const config  = {
 
     // 是否启用中间件代理API请求
     // 设置为true时，所有API请求将通过中间件转发
-    API_MIDDLEWARE_ENABLED: true,
+    API_MIDDLEWARE_ENABLED: false,
   
     //=======================================================
     // 中间件服务器URL (不含路径) 开源地址 https://github.com/codeman857/EZ-Encrypt-Middleware
@@ -66,8 +64,8 @@ export const config  = {
 
     // ====================  网站基础配置  ====================
     SITE_CONFIG: {
-        siteName: 'EZ THEME',
-        siteDescription: 'EZ UI',
+        siteName: 'M78星云',
+        siteDescription: '你相信光吗',
         // copyright会自动使用当前年份
         copyright: `© ${new Date().getFullYear()} EZ THEME. All Rights Reserved.`,
 
@@ -101,7 +99,8 @@ export const config  = {
         defaultTheme: 'light',
 
         // 主题色 (16进制颜色值)
-        primaryColor: '#355cc2',
+        // primaryColor: '#355cc2',
+        primaryColor: '#408bd6',
 
         // 是否启用落地页 (true=启用, false=禁用)
         enableLandingPage: true // 默认启用
@@ -177,13 +176,16 @@ export const config  = {
         showHotSaleBadge: false,
 
         // 是否显示套餐特性卡片 (true=显示, false=隐藏)
-        showPlanFeatureCards: true, // 默认显示
+        showPlanFeatureCards: false, // 默认显示
 
         // 是否自动选择周期最大的标签，设为false则不会自动选择
         autoSelectMaxPeriod: false, // 默认关闭
 
         // 是否隐藏周期选择标签 (true=隐藏, false=显示)
         hidePeriodTabs: false, // 默认显示周期选择标签
+
+        // 是否隐藏库存充足标签
+        hideStockPlentyLabel: true,
 
         // 库存紧张的阈值（当库存数量小于等于此值且大于0时显示库存紧张）
         lowStockThreshold: 5,
@@ -205,7 +207,7 @@ export const config  = {
         // 商店弹窗配置
         popup: {
             // 是否启用弹窗
-            enabled: true,
+            enabled: false,
 
             // 弹窗标题
             title: "用户须知",
@@ -222,7 +224,7 @@ export const config  = {
     },
     ORDER_CONFIG: {
         // 下单前二次确认
-        confirmOrder: true,
+        confirmOrder: false,
         // 下单前二次确认内容
         confirmOrderContent: "<p><strong style='color: red'>无法提供相关教程和使用说明。</strong></p><p><strong style='color: red'>不会使用请勿购买，没有退款政策</strong></p>",
 
@@ -230,7 +232,7 @@ export const config  = {
     // 仪表盘页面配置
     DASHBOARD_CONFIG: {
         // 是否在欢迎卡片中显示用户邮箱 (true=显示, false=隐藏)
-        showUserEmail: false,
+        showUserEmail: true,
 
         // 是否为导入订阅按钮添加高光效果和填充底色 (true=添加效果, false=不添加效果)
         importButtonHighlightBtnbgcolor: false,
@@ -260,7 +262,7 @@ export const config  = {
         // ===============================
 
         // 是否显示在线设备数量限制 (true=显示, false=隐藏，仅Xiao-V2board支持)
-        showOnlineDevicesLimit: true,
+        showOnlineDevicesLimit: false,
         
         // 是否显示导入订阅
         showImportSubscription: true,
@@ -276,8 +278,8 @@ export const config  = {
         showAndroid: true,
         showMacOS: true,
         showWindows: true,
-        showLinux: true,
-        showOpenWrt: true,
+        showLinux: false,
+        showOpenWrt: false,
 
         // 客户端下载链接  //可以改成文档链接直接在新标签页打开
         clientLinks: {
@@ -335,7 +337,7 @@ export const config  = {
     // 用户中心页面配置
     PROFILE_CONFIG: {
         // 是否显示礼品卡兑换栏目 (true=显示, false=隐藏)
-        showGiftCardRedeem: false, // 只有Xiao-V2board支持礼品卡兑换
+        showGiftCardRedeem: true, // 只有Xiao-V2board支持礼品卡兑换
 
         // 是否显示最近登录设备栏目 (true=显示, false=隐藏)
         showRecentDevices: true
@@ -419,7 +421,7 @@ export const config  = {
         autoCheckMaxTimes: 60, // 默认60次
 
         // 是否对Safari浏览器使用支付弹窗模式，而不是直接跳转 (true=使用弹窗, false=直接跳转)
-        useSafariPaymentModal: true, // 默认开启
+        useSafariPaymentModal: false, // 默认开启
 
         // 是否自动选择第一个支付方式 (true=自动选择, false=需要用户手动选择)
         // 开启后，用户进入支付页面时将自动选择列表中的第一个支付方式，无需手动点击选择
@@ -462,7 +464,7 @@ export const config  = {
     // 浏览器访问限制配置
     BROWSER_RESTRICT_CONFIG: {
         // 是否启用浏览器限制功能
-        enabled: true,
+        enabled: false,
 
         // 各浏览器是否被限制访问（true=限制访问，false=允许访问）
         restrictBrowsers: {
@@ -522,7 +524,7 @@ export const config  = {
         showNodeDetails: false,
 
         // 是否允许查看节点详细信息（控制详情按钮和模态框）
-        allowViewNodeInfo: true
+        allowViewNodeInfo: false
     },
 
     // 客服系统配置
