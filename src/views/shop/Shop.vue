@@ -208,6 +208,17 @@
 
             <h2 class="card-title">{{ plan.name }}</h2>
 
+        <!--显示自定义标识-->
+            <!-- 只显示带 label 的 -->
+            <div
+                class="card-badge"
+                v-for="(label, idx) in getPlanLabels(plan)"
+                :key="`label-${plan.id}-${idx}`"
+                :style="{ backgroundColor: label.background, color: label.textColor }"
+            >
+              {{ label.text }}
+            </div>
+
             <div class="card-badge glassmorphism stock-plenty" v-if="(plan.capacity_limit >= SHOP_CONFIG.lowStockThreshold || plan.capacity_limit === null) && !SHOP_CONFIG.hideStockPlentyLabel">
 
               <IconBox :size="16" class="badge-icon" />
@@ -486,6 +497,7 @@ export default {
 
   },
 
+
   setup() {
 
     const { t, locale } = useI18n();
@@ -493,8 +505,6 @@ export default {
     const { showToast } = useToast();
 
     const router = useRouter();
-
-    
 
     const loading = reactive({
 
@@ -970,6 +980,25 @@ export default {
 
     };
 
+    const getPlanLabels = (plan) => {
+      if (!isJsonContent(plan.content)) return [];
+      try {
+        const arr = parseJsonContent(plan.content);
+        return arr
+            .filter(it => it && it.label && typeof it.label.text === 'string')
+            .map(it => ({
+              text: it.label.text,
+              background: it.label.background || '#e01631',
+              // 兜底白色，且修正可能的 '#fffff' 写错
+              textColor: /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(it.label.textColor || '')
+                  ? it.label.textColor
+                  : '#ffffff'
+            }));
+      } catch {
+        return [];
+      }
+    };
+
     
 
     const purchasePlan = (plan) => {
@@ -1243,6 +1272,8 @@ export default {
       isJsonContent,
 
       parseJsonContent,
+
+      getPlanLabels,
 
       purchasePlan,
 
