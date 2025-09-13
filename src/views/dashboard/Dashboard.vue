@@ -121,6 +121,32 @@
         </div>
       </transition>
 
+      <!-- 订阅激活结果弹窗（复用公告样式） -->
+      <transition name="fade">
+        <div v-if="showActivationModal" class="notice-modal-overlay" @click="closeActivationModal">
+          <transition name="popup-slide">
+            <div v-if="showActivationModal" class="notice-modal" :style="noticeModalStyle" @click.stop>
+              <div class="notice-modal-header">
+                <h2 class="popup-title">{{ activationTitle }}</h2>
+                <button class="popup-close-btn" @click="closeActivationModal">
+                  <IconX :size="20"/>
+                </button>
+              </div>
+              <div class="notice-modal-content">
+                <div class="notice-content">
+                  <div v-html="activationContent"></div>
+                </div>
+              </div>
+              <div class="notice-modal-footer">
+                <button class="popup-action-btn adaptive-btn" @click="closeActivationModal">
+                  {{ $t('common.close') }}
+                </button>
+              </div>
+            </div>
+          </transition>
+        </div>
+      </transition>
+
       <!-- 套餐信息卡片 -->
       <div v-if="hasPlan" class="dashboard-card subscription-card" :class="{'card-animate': !loading.userInfo}"
            style="animation-delay: 0.3s">
@@ -170,13 +196,29 @@
               </div>
             </div>
             <div class="subscription-actions">
-              <button v-if="showImportSubscription" class="btn-outline" :class="{
-                'btn-active': showImportCard,
-                'btn-highlight-btnbgcolor': DASHBOARD_CONFIG.importButtonHighlightBtnbgcolor
-              }" @click="toggleImportCard">
-                <IconShare :size="16" class="btn-icon"/>
-                <span class="">{{ $t('dashboard.importSubscription') }}</span>
+
+<!--              导入订阅按钮-->
+              <button
+                  v-if="showImportSubscription"
+                  class="btn-outline"
+                  :class="{
+                    'btn-active': showImportCard,
+                    'btn-highlight-btnbgcolor': DASHBOARD_CONFIG.importButtonHighlightBtnbgcolor
+                  }"
+                  :disabled="isActivating"
+                  @click="activateSubscription"
+              >
+                <template v-if="isActivating">
+                  <span class="btn-loader" aria-hidden="true"></span>
+                  <span>{{ $t('common.loading') }}</span>
+                </template>
+                <template v-else>
+                  <IconShare :size="16" class="btn-icon"/>
+                  <span class="">{{ $t('dashboard.importSubscription') }}</span>
+                </template>
               </button>
+
+
               <button
                   v-if="showRenewPlanButton"
                   class="btn-outline renew-plan-btn"
@@ -917,6 +959,96 @@ export default {
     const currentNoticeIndex = ref(0);
     const showNoticeDetails = ref(false);
     const showImportCard = ref(false);
+    const isActivating = ref(false);
+
+    // 激活结果弹窗相关
+    const showActivationModal = ref(false);
+    const activationTitle = ref(t('dashboard.importSubscription'));
+    const activationContent = ref('');
+    const closeActivationModal = () => { showActivationModal.value = false; };
+
+    const activateSubscription = async () => {
+      // 判断如果已经展开，则关闭并返回，不请求接口
+      if (showImportCard.value) {
+        showImportCard.value = false;
+        return;
+      }
+      // 如果不启用一次性链接，则直接展开，不请求接口
+      if (!DASHBOARD_CONFIG.enableDisposableLink) {
+        if (!showImportCard.value) {
+          showImportCard.value = true;
+          await nextTick();
+          setTimeout(() => {
+            const importCard = document.querySelector('.import-card');
+            if (importCard) {
+              importCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }, 100);
+        }
+        return;
+      }
+      if (isActivating.value) return;
+      isActivating.value = true;
+      try {
+        const authData = localStorage.getItem('auth_data') || sessionStorage.getItem('auth_data');
+        const response = await fetch(`${DASHBOARD_CONFIG.customSubLink}/activeSub`, {
+          method: 'GET',
+          headers: {
+            'Authorization': authData ? authData : ''
+          }
+        });
+        if (response.ok) {
+          // 解析返回并提示有效期
+          let data = null;
+          try {
+            data = await response.json();
+          } catch (_) {
+            data = null;
+          }
+          if (data && data.status === 200) {
+            // 在弹窗/通知中提示 TTL 有效期
+            const ttlSec = typeof data.ttl === 'number' ? data.ttl : undefined;
+            // if (ttlSec !== undefined) {
+            //   showToast(`订阅已激活，有效期 ${ttlSec} 秒`, 'success', 3000);
+            // } else {
+            //   showToast('订阅已激活', 'success', 3000);
+            // }
+            // if (data.token) {
+            //   console.log('Subscription token:', data.token);
+            // }
+            // 构建弹窗内容并显示
+            const expireAt = typeof ttlSec === 'number' ? new Date(Date.now() + ttlSec * 1000) : null;
+            const expireStr = expireAt ? expireAt.toLocaleString() : '';
+            activationTitle.value = t('dashboard.importSubscription');
+            const prefixMsg = '本站已开启「一次性订阅」功能。订阅链接在倒计时结束后将失效，无法继续更新。<br/>如果需要刷新订阅，点击上方「导入订阅」按钮即可：可在对应的客户端中直接更新，无需再次导入。<br/><br/>';
+            activationContent.value = expireStr
+              ? `${prefixMsg}订阅已激活，可用 <b>${ttlSec}</b> 秒。<br/>到期时间：<b>${expireStr}</b>`
+              : `${prefixMsg}订阅已激活，可用 <b>${ttlSec ?? ''}</b> 秒。`;
+            showActivationModal.value = true;
+          }
+
+          // 仅在响应为200系列时展开导入菜单
+          if (!showImportCard.value) {
+            showImportCard.value = true;
+            await nextTick();
+            setTimeout(() => {
+              const importCard = document.querySelector('.import-card');
+              if (importCard) {
+                importCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }, 100);
+          }
+        } else {
+          // 非200系列时仅提示错误，不展开导入卡片
+          showToast(t('common.error_occurred'), 'error', 3000);
+        }
+      } catch (error) {
+        console.error('activateSubscription error:', error);
+        showToast(t('common.error_occurred'), 'error', 3000);
+      } finally {
+        isActivating.value = false;
+      }
+    };
     const showQrCode = ref(false);
     const {showToast} = useToast();
     const qrCodeUrl = ref('');
@@ -1141,6 +1273,27 @@ export default {
             userStats.isRemainingDaysPermanent = true;
           }
         }
+
+        if (window.$chatwoot) {
+          // 设置用户基本身份信息
+          window.$chatwoot.setUser(response.data.uuid || "anonymous", {
+            email: response.data.email || '',
+            name: response.data.email || '',
+            avatar_url: '', // 有头像可填写，否则留空
+            // identifier_hash: r.data.uuid, // 若启用 Chatwoot secure mode 可添加 HMAC
+          });
+
+          // 设置自定义属性（将会在 Chatwoot 后台联系人详情中看到）
+          window.$chatwoot.setCustomAttributes({
+            planPackage: `${(response.data.transfer_enable / 1024 / 1024 / 1024).toFixed(2)}G`,
+            planExpiry: formatTimestamp(response.data.expired_at * 1000),
+            createdAt: formatTimestamp(response.data.created_at * 1000),
+            language: response.data.language || 'zh-CN'
+          });
+        } else {
+          console.log("没有使用chatwoot")
+        }
+
       } catch (error) {
         console.error('获取用户信息失败:', error);
       } finally {
@@ -1477,7 +1630,14 @@ export default {
       if (userPlan.value.subscribeUrl) {
         qrCodeLoading.value = true;
         try {
-          QRCode.toDataURL(userPlan.value.subscribeUrl, {
+          let subscribeUrl =""
+          if (DASHBOARD_CONFIG.customSubLink !== "") {
+            const originUrl = new URL(userPlan.value.subscribeUrl);
+            subscribeUrl = `${DASHBOARD_CONFIG.customSubLink}${originUrl.pathname}${originUrl.search}`;
+          } else {
+            subscribeUrl = userPlan.value.subscribeUrl;
+          }
+          QRCode.toDataURL(subscribeUrl, {
             width: 200,
             margin: 2,
             color: {
@@ -1509,7 +1669,14 @@ export default {
     const copySubscription = () => {
       if (userPlan.value.subscribeUrl) {
         const copyWithAPI = () => {
-          navigator.clipboard.writeText(userPlan.value.subscribeUrl)
+          let subscribeUrl = "";
+          if (DASHBOARD_CONFIG.customSubLink !== ""){
+            const originUrl = new URL(userPlan.value.subscribeUrl);
+            subscribeUrl = `${DASHBOARD_CONFIG.customSubLink}${originUrl.pathname}${originUrl.search}`;
+          } else {
+            subscribeUrl = userPlan.value.subscribeUrl;
+          }
+          navigator.clipboard.writeText(subscribeUrl)
               .then(() => {
                 showToast(t('dashboard.subscriptionCopied'), 'success', 3000);
               })
@@ -1521,7 +1688,13 @@ export default {
         const copyWithFallback = () => {
           try {
             const textarea = document.createElement('textarea');
-            textarea.value = userPlan.value.subscribeUrl;
+            if (DASHBOARD_CONFIG.customSubLink !== ""){
+              const originUrl = new URL(userPlan.value.subscribeUrl);
+              textarea.value = `${DASHBOARD_CONFIG.customSubLink}${originUrl.pathname}${originUrl.search}`;
+            } else {
+              textarea.value = userPlan.value.subscribeUrl;
+            }
+            // textarea.value = userPlan.value.subscribeUrl;
             textarea.style.position = 'fixed';
             textarea.style.left = '0';
             textarea.style.top = '0';
@@ -1558,7 +1731,14 @@ export default {
         return;
       }
 
-      const subscribeUrl = userPlan.value.subscribeUrl;
+      let subscribeUrl = "";
+      if (DASHBOARD_CONFIG.customSubLink !== ""){
+        const originUrl = new URL(userPlan.value.subscribeUrl);
+        subscribeUrl = `${DASHBOARD_CONFIG.customSubLink}${originUrl.pathname}${originUrl.search}`;
+      } else {
+        subscribeUrl = userPlan.value.subscribeUrl;
+      }
+
       const siteName = SITE_CONFIG.siteName || '订阅';
 
       let url = '';
@@ -1989,6 +2169,13 @@ export default {
       DASHBOARD_CONFIG,
       allowNewPeriod,
       showImportSubscription,
+      isActivating,
+      activateSubscription,
+      // 新增激活弹窗相关
+      showActivationModal,
+      activationTitle,
+      activationContent,
+      closeActivationModal,
     };
   }
 };
@@ -2137,6 +2324,21 @@ export default {
           border-color: #f44336;
           background-color: rgba(244, 67, 54, 0.1);
         }
+      }
+
+      .btn-loader {
+        width: 16px;
+        height: 16px;
+        border: 2px solid currentColor;
+        border-top-color: transparent;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+        animation: btn-spin 0.8s linear infinite;
+        vertical-align: middle;
+      }
+      @keyframes btn-spin {
+        to { transform: rotate(360deg); }
       }
     }
   }
@@ -2354,7 +2556,7 @@ export default {
   .notice-card {
     margin-bottom: 24px;
 
-    .card-header {
+      .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;

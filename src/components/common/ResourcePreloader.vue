@@ -74,7 +74,7 @@ export default {
 
     const preloadImages = ref([
 
-      '/images/logo.ico'
+      '/images/logo.png'
 
     ]);
 

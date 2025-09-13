@@ -1,7 +1,7 @@
 /**
  * 外部配置文件
  * index.html 中可以搜索 EZ 将其替换为您的网站名称
- * logo 摆放位置为 images/logo.ico
+ * logo 摆放位置为 images/logo.png
  */
 
 export const config  = {
@@ -266,6 +266,12 @@ export const config  = {
         
         // 是否显示导入订阅
         showImportSubscription: true,
+
+        // 是否启用订阅即焚
+        enableDisposableLink: true,
+
+        // 自定义订阅网址 留空不启用
+        customSubLink: "https://5ub.m78sc.cn"
     },
 
     // 客户端下载配置
@@ -283,10 +289,10 @@ export const config  = {
 
         // 客户端下载链接  //可以改成文档链接直接在新标签页打开
         clientLinks: {
-            ios: 'https://apps.apple.com/app/xxx',
-            android: 'https://play.google.com/store/apps/xxx',
-            macos: 'https://github.com/xxx/releases/latest',
-            windows: 'https://github.com/xxx/releases/latest',
+            ios: '#/docs/2',
+            android: 'https://appdownload.m78sc.cn/download.php?f=android',
+            macos: 'https://appdownload.m78sc.cn/download.php?f=mac',
+            windows: 'https://appdownload.m78sc.cn/download.php?f=win',
             linux: 'https://github.com/xxx/releases/latest',
             openwrt: 'https://github.com/xxx/releases/latest'
         },
@@ -453,9 +459,9 @@ export const config  = {
         // 邀请链接配置
         inviteLinkConfig: {
             // 链接模式：'auto'=自动使用当前站点域名，'custom'=使用自定义域名
-            linkMode: 'auto',
+            linkMode: 'custom',
             // 自定义域名，当linkMode为'custom'时使用
-            customDomain: 'https://example.com'
+            customDomain: 'https://www.m78.at'
         }
     },
 

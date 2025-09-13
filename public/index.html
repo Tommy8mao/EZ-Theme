@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" href="./images/logo.ico">
+    <link rel="icon" href="./images/logo.png">
+    <link rel="apple-touch-icon" href="./images/logo.png">
     <!-- 设置初始标题 -->
     <title><%= htmlWebpackPlugin.options.title %></title>
     <!-- 预加载字体 -->
@@ -12,6 +13,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <%= typeof injectCustomScript !== 'undefined' ? injectCustomScript : '' %>
+
+    <meta name="description" content="M78星云机场 VPN ，套餐价格低至7元 IPLC线路高端SS专线 解锁奈飞，迪士尼，ChatGPT 送Emby服务，数万部4K电影电视剧免费看。支持各种代理工具，如Clash，ShadowRocket（小火箭），V2ray。新手友好，提供一键客户端">
+    <meta name="keywords" content="科学上网, clash节点, ShadowRocket（小火箭）, 便宜机场梯子, ss, ssr, v2ray, 不免费翻墙机场评测推荐">
+    <link rel="canonical" href="https://m78star.cloud/"/>
+
+    <!-- Open Graph 标签 -->
+    <meta property="og:title" content="M78星云机场">
+    <meta property="og:description" content="套餐7元起，采用中转+IEPL专线网络，峰值带宽高达5Gbps，晚高峰轻松播放4K视频，无卡顿、无压力！
+畅享高速稳定的极致网络体验，和卡顿说拜拜">
+    <meta property="og:image" content="https://m78star.cloud/reg-buy/assets/home_introduce_4-ezJrgTvg.png">
+    <meta property="og:url" content="https://m78star.cloud/">
+    <meta property="og:type" content="website">
 
     <!-- 全局样式 -->
     <style>
@@ -76,6 +89,22 @@
 <body>
 <div id="app"></div>
 <!-- built files will be auto injected -->
+<script>
+    (function(d,t) {
+        var BASE_URL="https://chatwoot.m78star.cloud";
+        // var BASE_URL="https://chatwoot.m78sc.cn";
+        var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+        g.src=BASE_URL+"/packs/js/sdk.js";
+        g.async = true;
+        s.parentNode.insertBefore(g,s);
+        g.onload=function(){
+            window.chatwootSDK.run({
+                websiteToken: 'Vgs1SHkV9mrXqgc1jmidWYab',
+                baseUrl: BASE_URL
+            })
+        }
+    })(document,"script");
+</script>
 <!-- 隐蔽版本号 若不想显示版本号 请注释下方 div 标签-->
 <div class="app-version">v0.3.8</div>
 </body>
