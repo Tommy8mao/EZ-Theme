@@ -3929,7 +3929,7 @@ export default {
     }
 
     &:hover:not(:disabled) {
-      transform: translateY(-2px);
+      //transform: translateY(-2px);
       box-shadow: 0 4px 10px rgba(var(--theme-color-rgb), 0.3);
     }
 
@@ -4275,7 +4275,22 @@ a.eztheme-btn {
 @media screen and (max-width: 642px) {
   .popup-action-btn.adaptive-btn {
     transform: translateX(-60px);
+
+    &:hover:not(:disabled) {
+      transform: translate(-60px, -2px);
+      //transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(var(--theme-color-rgb), 0.3);
+    }
   }
+}
+
+@media screen and (min-width: 643px) {
+  .popup-action-btn.adaptive-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(var(--theme-color-rgb), 0.3);
+
+  }
+
 }
 </style>
 
