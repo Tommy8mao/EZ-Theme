@@ -351,7 +351,17 @@
 
                   <IconX v-else class="feature-icon disabled" />
 
-                  <span :class="{ 'disabled-text': !feature.support }">{{ feature.feature }}</span>
+                  <span :class="{ 'disabled-text': !feature.support }">
+                    {{ feature.feature }}
+
+                    <a-tooltip placement="top" v-if="feature.promptText">
+                      <template #title>
+                        <span>{{feature.promptText}}</span>
+                      </template>
+                      <QuestionCircleOutlined />
+                    </a-tooltip>
+
+                  </span>
 
                 </div>
 
@@ -435,6 +445,8 @@ import { SHOP_CONFIG } from '@/utils/baseConfig';
 
 import ShopPopup from '@/components/shop/ShopPopup.vue';
 
+import {QuestionCircleOutlined} from '@ant-design/icons-vue'
+
 import {
 
   IconRocket,
@@ -457,11 +469,11 @@ import {
 
   IconCircle,
 
-  IconCircleCheck
-
+  IconCircleCheck,
 } from '@tabler/icons-vue';
 
 import { useRouter } from 'vue-router';
+import { Tooltip } from 'ant-design-vue';
 
 
 
@@ -493,7 +505,11 @@ export default {
 
     IconCircleCheck,
 
-    ShopPopup
+    ShopPopup,
+
+    QuestionCircleOutlined,
+
+    ATooltip: Tooltip
 
   },
 

@@ -4170,6 +4170,8 @@ export default {
     transition: all 0.3s ease;
     min-width: 120px;
 
+
+
     &.adaptive-btn {
       min-width: auto;
       padding: 8px 20px;
@@ -4520,6 +4522,14 @@ a.eztheme-btn {
 .stats-card.balance-card .stats-value {
   color: var(--theme-color);
 }
+
+@media screen and (max-width: 642px) {
+  .popup-action-btn.adaptive-btn {
+    transform: translateX(-60px);
+  }
+}
 </style>
+
+
 
 

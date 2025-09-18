@@ -84,6 +84,17 @@
             z-index: 5;
         }
     </style>
+    <style>
+    /* Chatwoot: lift launcher in mobile portrait */
+    @media screen and (max-width: 642px) and (orientation: portrait) {
+      .woot-widget-bubble { bottom: 80px !important; }
+    }
+    @media screen and (max-width: 642px) and (orientation: landscape) {
+        .woot-widget-bubble {
+            bottom: 20px !important; /* 恢复默认 */
+        }
+    }
+  </style>
 
 </head>
 <body>
@@ -104,6 +115,37 @@
             })
         }
     })(document,"script");
+
+</script>
+<script>
+(function () {
+  function adjustChatwoot() {
+    var hash = window.location.hash;
+    var bubble = document.querySelector('.woot-widget-bubble');
+    if (!bubble) return;
+
+    // 只在手机竖屏生效
+    var isMobilePortrait = window.innerWidth <= 642 && window.matchMedia('(orientation: portrait)').matches;
+
+    if (hash.includes('/login') || hash.includes('/register')) {
+      bubble.style.setProperty('bottom', '20px', 'important'); // 默认位置
+    } else {
+      if (isMobilePortrait) {
+        bubble.style.setProperty('bottom', '80px', 'important'); // 上移
+      } else {
+        bubble.style.setProperty('bottom', '20px', 'important'); // 其它情况默认
+      }
+    }
+  }
+
+  window.addEventListener('resize', adjustChatwoot);
+  window.addEventListener('hashchange', adjustChatwoot);
+  window.addEventListener('orientationchange', adjustChatwoot);
+  adjustChatwoot();
+
+  // 定时检查，确保 Chatwoot 异步加载后也能调整
+  setInterval(adjustChatwoot, 1000);
+})();
 </script>
 <!-- 隐蔽版本号 若不想显示版本号 请注释下方 div 标签-->
 <div class="app-version">v0.3.8</div>

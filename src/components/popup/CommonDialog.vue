@@ -26,9 +26,9 @@
             {{ cancelButtonText || $t(cancelButtonI18nKey) }}
           </button>
 
-          <button 
+          <button
             v-if="showConfirmButton"
-            class="dialog-btn dialog-btn-confirm" 
+            class="dialog-btn dialog-btn-confirm"
             @click="handleConfirm"
           >
             {{ confirmButtonText || $t(confirmButtonI18nKey) }}
