@@ -547,7 +547,7 @@ export default {
         title: '确认订单',
         description: '请确认您的订单信息并完成支付',
         existing_plan_warning_title: '您已有一个有效套餐',
-        existing_plan_warning_desc: '购买新套餐将替换您当前的有效套餐',
+        existing_plan_warning_desc: '如您购买新套餐，现有套餐会变成现金抵扣，具体金额会在点击提交订单后显示',
         select_period: '选择计费周期',
         coupon: '优惠码',
         enter_coupon: '输入优惠码（如有）',

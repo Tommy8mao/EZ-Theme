@@ -501,16 +501,16 @@ export const config  = {
             // 弹窗标题
             title: "工单须知",
             // 弹窗内容 (支持HTML)
-            content: "<p>请您准确描述您的问题，再提交工单，以便我们更快帮助您。</p>",
+            content: "<p>温馨提示：<br>若您是 <b>Windows</b>、<b>Android</b> 或 <b>macOS</b> 用户，使用过程中遇到问题，请优先下载我们的 <b>一键客户端</b> 并参考 <a href=\"/#/docs\" target=\"_blank\" rel=\"noopener\">使用教程</a>。<br> <b>我们仅提供与一键客户端相关的支持</b>：<br>如无法登录，请先完整按照教程排查；<br>仍未解决时，请准确提供您的 <b>使用设备（型号与系统版本）</b> 及 <b>故障描述</b>，便于我们快速处理。<br><br>若为 <b>Emby</b> 相关问题，请先尝试 <b>删号重开</b>，并确认：<br>① 电脑端在代理软件中已开启 <b>TUN 模式</b>；<br>② 未使用 <b>日本节点</b>。<br><b>感谢您的理解与配合！</b></p>",
             // 冷却时间（小时），在此时间内不会再次显示弹窗
             cooldownHours: 24,
             // 等待时间（秒），用户需要等待多少秒才能关闭弹窗，设为0表示无需等待
-            closeWaitSeconds: 0
+            closeWaitSeconds: 5
         },
         // 工单图片设置
-        isImageHosting: false, // 是否启用工单图片上传功能
+        isImageHosting: true, // 是否启用工单图片上传功能
         // imgBB 图床 api 设置 前往imgBB注册账号 https://imgbb.com/ 获取 apiKey
-        imgbbApiKey: '',
+        imgbbApiKey: 'bc2cc5f27cabadccb8774c5fac9419a6',
     },
 
     // 流量明细配置
@@ -587,7 +587,7 @@ export const config  = {
         // 可选值同上: 'invite', 'docs', 'tickets', 'nodes', 'orders', 'traffic', 'wallet', 'profile'
         // 默认值为 'docs'
         // 注意：如果第三个导航项设置为 'invite'，则第四个导航项不能设置为 'invite'
-        fourthNavItem: 'docs',
+        fourthNavItem: '',
     },
 
     // More页面自定义卡片配置
