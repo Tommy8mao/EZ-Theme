@@ -251,6 +251,13 @@ export default {
         dashboard: 'Trang chủ',
         shop: 'Cửa hàng',
         invite: 'Mời bạn',
+        docs: 'Tài liệu',
+        tickets: 'Vé hỗ trợ',
+        orders: 'Đơn hàng',
+        nodes: 'Nút',
+        traffic: 'Lưu lượng',
+        wallet: 'Ví',
+        profile: 'Hồ sơ',
         more: 'Thêm',
         commission: 'Hoa hồng',
         hotSale: 'Bán chạy'
@@ -372,6 +379,11 @@ export default {
             close_btn: 'Đóng',
             wait_close_btn: '{seconds} giây nữa đóng'
         }
+        ,
+        upPictures: 'Tải lên hình ảnh',
+        uploadingImages: 'Đang tải lên...',
+        uploadTipText: 'Kéo thả hình vào đây hoặc nhấn để tải lên',
+        uploadDescText: 'Hỗ trợ định dạng JPG, PNG, GIF, tối đa 5 MB'
     },
     profile: {
         title: 'Trung tâm Người dùng',

@@ -242,6 +242,13 @@ export default {
     dashboard: '대시보드',
     shop: '상점',
     invite: '초대',
+    docs: '문서',
+    tickets: '티켓',
+    orders: '주문',
+    nodes: '노드',
+    traffic: '트래픽',
+    wallet: '지갑',
+    profile: '프로필',
     more: '더 보기',
     commission: '커미션',
     hotSale: '인기 상품'
@@ -375,6 +382,11 @@ export default {
       close_btn: '닫기',
       wait_close_btn: '{seconds}초 후 닫기'
     }
+    ,
+    upPictures: '이미지 업로드',
+    uploadingImages: '업로드 중...',
+    uploadTipText: '이미지를 이곳에 드래그하거나 클릭하여 업로드',
+    uploadDescText: 'JPG, PNG, GIF 형식 지원, 최대 5 MB'
   },
   profile: {
     title: '사용자 센터',

@@ -242,6 +242,13 @@ export default {
     dashboard: '儀表板',
     shop: '商店',
     invite: '邀請',
+    docs: '文件',
+    tickets: '工單',
+    orders: '訂單',
+    nodes: '節點',
+    traffic: '流量',
+    wallet: '錢包',
+    profile: '帳號',
     more: '更多',
     commission: '返利',
     hotSale: '熱銷'
@@ -523,6 +530,11 @@ export default {
       close_btn: '我知道了',
       wait_close_btn: '請等待 {seconds} 秒'
     }
+    ,
+    upPictures: '上傳圖片',
+    uploadingImages: '上傳中...',
+    uploadTipText: '拖曳圖片到此處或點擊上傳',
+    uploadDescText: '支援 JPG、PNG、GIF 格式，最大 5 MB'
   },
   order: {
     title: '確認訂單',

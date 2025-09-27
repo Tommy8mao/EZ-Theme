@@ -242,6 +242,13 @@ export default {
     dashboard: 'داشبورد',
     shop: 'فروشگاه',
     invite: 'دعوت',
+    docs: 'مستندات',
+    tickets: 'تیکت‌ها',
+    orders: 'سفارش‌ها',
+    nodes: 'نودها',
+    traffic: 'ترافیک',
+    wallet: 'کیف پول',
+    profile: 'پروفایل',
     more: 'بیشتر',
     commission: 'کمیسیون',
     hotSale: 'فروش داغ'
@@ -373,7 +380,13 @@ export default {
     popup: {
       close_btn: 'بستن',
       wait_close_btn: 'بستن در {seconds} ثانیه'
-    },
+    }
+    ,
+    upPictures: 'آپلود تصاویر',
+    uploadingImages: 'در حال آپلود...',
+    uploadTipText: 'تصاویر را اینجا بکشید و رها کنید یا برای آپلود کلیک کنید',
+    uploadDescText: 'پشتیبانی از فرمت‌های JPG، PNG، GIF تا 5 مگابایت'
+    ,
   },
   profile: {
     title: 'مرکز کاربر',

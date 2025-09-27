@@ -242,6 +242,13 @@ export default {
     dashboard: 'ダッシュボード',
     shop: 'ストア',
     invite: '招待',
+    docs: 'ドキュメント',
+    tickets: 'チケット',
+    orders: '注文',
+    nodes: 'ノード',
+    traffic: 'トラフィック',
+    wallet: 'ウォレット',
+    profile: 'プロフィール',
     more: 'もっと見る',
     commission: 'リベート',
     hotSale: '人気'
@@ -374,6 +381,11 @@ export default {
       close_btn: '閉じる',
       wait_close_btn: '{seconds}秒後に閉じる'
     }
+    ,
+    upPictures: '画像をアップロード',
+    uploadingImages: 'アップロード中...',
+    uploadTipText: 'ここに画像をドラッグ＆ドロップするか、クリックしてアップロード',
+    uploadDescText: 'JPG、PNG、GIF 形式に対応、最大 5 MB'
   },
   profile: {
     title: 'ユーザーセンター',
