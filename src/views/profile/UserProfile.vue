@@ -418,23 +418,23 @@
 
 
 
-              <button v-if="subscriptionUrl" class="action-btn" @click="copySubscriptionUrl">
+<!--              <button v-if="subscriptionUrl" class="action-btn" @click="copySubscriptionUrl">-->
 
-                <IconCopy :size="18" />
+<!--                <IconCopy :size="18" />-->
 
-                {{ $t('profile.copySubscription') }}
+<!--                {{ $t('profile.copySubscription') }}-->
 
-              </button>
-
-            </div>
-
-
-
-            <div v-if="subscriptionUrl" class="subscription-info">
-
-              <div class="subscription-url">{{ subscriptionUrl }}</div>
+<!--              </button>-->
 
             </div>
+
+
+
+<!--            <div v-if="subscriptionUrl" class="subscription-info">-->
+
+<!--              <div class="subscription-url">{{ subscriptionUrl }}</div>-->
+
+<!--            </div>-->
 
           </div>
 
@@ -756,9 +756,11 @@
 
                 <p>{{ $t('profile.telegramSearchTip') }}
 
-                  <a :href="`https://t.me/${telegramBotInfo?.username}`" target="_blank" class="tg-link">
+                  <a :href="`https://t.me/${ PROFILE_CONFIG.customTelegramBot === '' ? telegramBotInfo?.username : PROFILE_CONFIG.customTelegramBot }`" target="_blank" class="tg-link">
 
-                    @{{ telegramBotInfo?.username }}
+                    @{{
+                      PROFILE_CONFIG.customTelegramBot === '' ? telegramBotInfo?.username : PROFILE_CONFIG.customTelegramBot
+                    }}
 
                   </a>
 
