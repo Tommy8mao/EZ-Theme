@@ -3767,18 +3767,18 @@ export default {
 }
 
 .notice-modal-content {
-  padding: 20px;
+  padding: 10px 20px;
   overflow-y: auto;
   flex: 1;
   background: linear-gradient(to bottom, rgba(var(--theme-color-rgb), 0.02), transparent);
 
   .notice-content {
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.0;
 
     :deep(p) {
-      margin: 12px 0;
-      line-height: 1.6;
+      margin: 2px 0;
+      line-height: 1.0;
       color: var(--text-color);
     }
 
@@ -3799,16 +3799,16 @@ export default {
     :deep(img) {
       max-width: 100%;
       height: auto;
-      margin: 10px 0;
+      margin: 5px 0;
       border-radius: 8px;
     }
 
     :deep(ul), :deep(ol) {
       padding-left: 20px;
-      margin-bottom: 16px;
+      margin-bottom: 2px;
 
       li {
-        margin-bottom: 8px;
+        margin-bottom: 2px;
         list-style-position: outside;
       }
     }
@@ -3822,20 +3822,20 @@ export default {
     }
 
     :deep(h1), :deep(h2), :deep(h3), :deep(h4), :deep(h5), :deep(h6) {
-      margin-top: 24px;
-      margin-bottom: 16px;
+      margin-top: 4px;
+      margin-bottom: 4px;
       font-weight: 600;
     }
 
     :deep(blockquote) {
       border-left: 4px solid var(--theme-color);
-      padding: 10px 15px;
-      margin: 16px 0;
+      padding: 5px 15px;
+      margin: 8px 0;
       background-color: rgba(var(--theme-color-rgb), 0.05);
       border-radius: 0 6px 6px 0;
 
       p {
-        margin: 8px 0;
+        margin: 4px 0;
       }
     }
 
