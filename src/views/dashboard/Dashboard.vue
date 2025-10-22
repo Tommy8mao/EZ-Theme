@@ -1274,6 +1274,20 @@ export default {
           }
         }
 
+        function formatTimestamp(timestamp) {
+          if (timestamp === null || timestamp === undefined) {
+            return '无效日期'; // 或返回空字符串，根据需求调整
+          }
+          const date = new Date(timestamp);
+          if (isNaN(date.getTime())) {
+            return '无效日期';
+          }
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          return `${year}-${month}-${day}`;
+        }
+
         if (window.$chatwoot) {
           // 设置用户基本身份信息
           window.$chatwoot.setUser(response.data.uuid || "anonymous", {
@@ -1286,10 +1300,13 @@ export default {
           // 设置自定义属性（将会在 Chatwoot 后台联系人详情中看到）
           window.$chatwoot.setCustomAttributes({
             planPackage: `${(response.data.transfer_enable / 1024 / 1024 / 1024).toFixed(2)}G`,
+            // planTraffic: `${response.data}`,
             planExpiry: formatTimestamp(response.data.expired_at * 1000),
             createdAt: formatTimestamp(response.data.created_at * 1000),
+            orgin: `${window.location.host}`,
             language: response.data.language || 'zh-CN'
           });
+          console.log(response.data)
         } else {
           console.log("没有使用chatwoot")
         }

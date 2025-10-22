@@ -904,12 +904,10 @@ const submitTicket = async () => {
                 ipInfoResponse
             ] = await Promise.all([
                 getUserInfo(),
-
                 getCommConfig(),
-
                 getUserSubscribe(),
-
-                getIpLocationInfo()
+                // 允许 IP 定位失败也不影响提交通道
+                getIpLocationInfo().catch(() => null)
             ]);
 
             if (
@@ -921,15 +919,27 @@ const submitTicket = async () => {
                     commConfigResponse.data.currency_symbol;
             }
 
-            const userInfoText = formatUserInfoForTicket(
-                userInfoResponse,
+            const safeIpInfo =
+                ipInfoResponse && typeof ipInfoResponse === 'object'
+                    ? ipInfoResponse
+                    : null;
 
-                ipInfoResponse,
+            let userInfoText = '';
+            try {
+                userInfoText = formatUserInfoForTicket(
+                    userInfoResponse,
+                    safeIpInfo,
+                    subscribeResponse
+                );
+            } catch (e) {
+                console.warn('formatUserInfoForTicket failed:', e);
+                // 若格式化失败，降级为不附加用户信息
+                userInfoText = '';
+            }
 
-                subscribeResponse
-            );
-
-            messageContent = `${newTicket.value.message}\n\n${userInfoText}`;
+            messageContent = `${newTicket.value.message}${
+                userInfoText ? `\n\n${userInfoText}` : ''
+            }`;
         }
 
         const data = await createTicket({

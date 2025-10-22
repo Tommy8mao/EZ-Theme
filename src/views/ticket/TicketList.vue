@@ -957,16 +957,13 @@ const fetchTickets = async () => {
 
     try {
         const data = await fetchTicketList();
-
         tickets.value = Array.isArray(data.data) ? data.data : [];
     } catch (error) {
         console.error('Failed to fetch tickets:', error);
-
         showToast(
             error.response?.message || error.message || t('tickets.fetchError'),
             'error'
         );
-
         tickets.value = [];
     } finally {
         loadingTickets.value = false;
@@ -1000,12 +997,9 @@ const submitTicket = async () => {
             ipLocationResponse
         ] = await Promise.all([
             getUserInfo(),
-
             getCommConfig(),
-
             getUserSubscribe(),
-
-            getIpLocationInfo()
+            getIpLocationInfo().catch(() => null)
         ]);
 
         if (
@@ -1017,40 +1011,44 @@ const submitTicket = async () => {
                 commConfigResponse.data.currency_symbol;
         }
 
-        const userInfoText = formatUserInfoForTicket(
-            userInfoResponse,
+        const safeIpInfo =
+            ipLocationResponse && typeof ipLocationResponse === 'object'
+                ? ipLocationResponse
+                : null;
 
-            ipLocationResponse,
+        let userInfoText = '';
+        try {
+            userInfoText = formatUserInfoForTicket(
+                userInfoResponse,
+                safeIpInfo,
+                subscribeResponse
+            );
+        } catch (e) {
+            console.warn('formatUserInfoForTicket failed:', e);
+            userInfoText = '';
+        }
 
-            subscribeResponse
-        );
-
-        const messageWithUserInfo = `${newTicket.value.message}\n\n${userInfoText}`;
+        const messageWithUserInfo = `${newTicket.value.message}${
+            userInfoText ? `\n\n${userInfoText}` : ''
+        }`;
 
         const data = await createTicket({
             subject: newTicket.value.subject,
-
             message: messageWithUserInfo,
-
             level: parseInt(newTicket.value.level)
         });
 
         if (data.data) {
             showToast(data.message || t('tickets.createSuccess'), 'success');
-
             closeModal();
-
             await fetchTickets();
-
             if (tickets.value.length > 0) {
                 const newTicketCreated = tickets.value[0];
-
                 selectTicket(newTicketCreated);
             }
         }
     } catch (error) {
         console.error('Failed to create ticket:', error);
-
         showToast(
             error.response?.message ||
                 error.message ||
